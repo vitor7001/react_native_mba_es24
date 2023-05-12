@@ -1,7 +1,22 @@
+import React from 'react';
+import { useNavigation } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { Button, StyleSheet, Text, View } from 'react-native';
 
 export default function Home() {
+  
+  const navigation = useNavigation();
+  
+  React.useEffect(() => {
+    navigation.setOptions({
+      headerLeft: () => <Button title='Sair' onPress={() => navigation.goBack()}/>,
+      headerRight: () => <Button title='Cadastrar' onPress={() => navigation.navigate('UserRegister')}/>
+  
+    })
+  }, [])
+
+
+  
   return (
     <View style={styles.container}>
       <Text>Showw</Text>

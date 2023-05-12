@@ -1,7 +1,10 @@
+import { useNavigation } from '@react-navigation/native';
 import React from "react";
 import { View, Button, Text,TextInput, StyleSheet, Dimensions, Alert } from "react-native";
 
 export default function UserRegister(){
+
+    const navigation = useNavigation();
 
     const [name, setName] = React.useState('');
     const [login, setLogin] = React.useState('');
@@ -35,6 +38,7 @@ export default function UserRegister(){
 
         Alert.alert(`Usuário ${name} cadastrado com sucesso!`)
 
+        navigation.navigate('Home')
     }
 
     return(

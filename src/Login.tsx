@@ -1,16 +1,19 @@
+import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 
 import {Dimensions ,TextInput,StyleSheet, Text, View, Button, Alert } from "react-native";
 
 export default function LoginPage(){
 
-    const [username, setUsername] = React.useState('');
+    const navigation = useNavigation()
 
-    const [password, setPassword] = React.useState('');
+    const [username, setUsername] = React.useState('vitor');
+
+    const [password, setPassword] = React.useState('123');
 
     function signIn(){
         if (username === 'vitor' && password === '123')  {
-            Alert.alert("Usuário logado com sucesso")
+            navigation.navigate('Home');
         }else{
             Alert.alert("Login/Senha inválido(a)")
         }
@@ -18,7 +21,7 @@ export default function LoginPage(){
 
     return(
         <View style={styles.container}>
-            <Text>Página de acesso</Text>
+            <Text>Página de verificação de login</Text>
             
             <Text style={styles.label}>Login: {username}</Text>
             <TextInput value={username} style={styles.input} onChangeText={setUsername}/>
