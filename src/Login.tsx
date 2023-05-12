@@ -25,6 +25,7 @@ export default function LoginPage(){
             
             <Text style={styles.label}>Senha:</Text>
             <TextInput value={password} style={styles.input} onChangeText={setPassword} secureTextEntry/>
+            
             <View style={styles.botao}>
                 <Button title="Entrar" onPress={signIn}/>
             </View>
