@@ -13,8 +13,7 @@ export default function UserRegister(){
     const [confirmPassword, setConfirmPassword] = React.useState('');    
 
     async function  register(){
-        await registerUser.registerUser(name,login,[], password)
-        /*
+        
         if(!name || name.trim() === '') {
 
             Alert.alert("Aviso, preencha o campo: Nome")
@@ -38,10 +37,15 @@ export default function UserRegister(){
             return
         }
 
-        Alert.alert(`Usuário ${name} cadastrado com sucesso!`)
+        const userInsert = await registerUser.registerUser(name,login,[], password)
 
+        if(userInsert.create)
+            Alert.alert(`Usuário ${name} cadastrado com sucesso!`)
+
+        if(!userInsert.create)
+            Alert.alert(`Erro ao inserir usuário: ${userInsert.message}`)
         navigation.navigate('Home')
-        */
+        
     }
 
     return(
