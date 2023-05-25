@@ -3,31 +3,28 @@ import React from 'react';
 import { Dimensions, TextInput, StyleSheet, Text, View, Button, Alert } from "react-native";
 import { sessionManager } from '../services/session.repository';
 
+import {authService} from '../services/auth/auth.service'
 
 export default function LoginPage() {
 
     const navigation = useNavigation()
 
-    const [username, setUsername] = React.useState('vitor');
+    const [username, setUsername] = React.useState('uedsonreis');
 
-    const [password, setPassword] = React.useState('123');
+    const [password, setPassword] = React.useState('123456');
 
     function signIn() {
-        if (username === 'vitor' && password === '123') {
-            const user = {
-                name: 'teste',
-                username,
-                password,
-                token: '123'
-            }
-            
-            sessionManager.setLoggedUser(user).then(() => {
-                navigation.navigate('Home');
-            });
 
-        } else {
-            Alert.alert("Login/Senha inválido(a)")
-        }
+        authService.login(username, password).then(
+            logged =>{
+                if(logged){
+                    navigation.navigate('Home')
+                }else {
+                    Alert.alert("Login/Senha inválido(a)")
+                }
+            }
+        )
+
     }
 
     return (

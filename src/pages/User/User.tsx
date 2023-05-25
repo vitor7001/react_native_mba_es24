@@ -1,6 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import React from "react";
 import { View, Button, Text,TextInput, StyleSheet, Dimensions, Alert } from "react-native";
+import { registerUser } from '../../services/user/user.create.service';
 
 export default function UserRegister(){
 
@@ -11,8 +12,9 @@ export default function UserRegister(){
     const [password, setPassword] = React.useState('');
     const [confirmPassword, setConfirmPassword] = React.useState('');    
 
-    function register(){
-        
+    async function  register(){
+        await registerUser.registerUser(name,login,[], password)
+        /*
         if(!name || name.trim() === '') {
 
             Alert.alert("Aviso, preencha o campo: Nome")
@@ -39,6 +41,7 @@ export default function UserRegister(){
         Alert.alert(`Usuário ${name} cadastrado com sucesso!`)
 
         navigation.navigate('Home')
+        */
     }
 
     return(
