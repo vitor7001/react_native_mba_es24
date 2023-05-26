@@ -7,6 +7,8 @@ class RegisterUser{
     public async registerUser(name: string, username: string, roles: Array<String>, password: string){
         const user = await sessionManager.getLoggedUser()
 
+        if(!user) throw new Error("Não há usuário no local storage para ser utilizado")
+
         const res = await fetch(this.url + '/users', {
             method: 'POST',
             headers: {
@@ -23,10 +25,7 @@ class RegisterUser{
 
         const userCreated = await res.json() 
 
-        if(userCreated && userCreated.message)
-            return {create: false, message: userCreated.message }
-        
-        return {create: true, message: false}
+        return userCreated
     }
 
 }

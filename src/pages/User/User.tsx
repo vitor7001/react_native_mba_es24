@@ -37,15 +37,15 @@ export default function UserRegister(){
             return
         }
 
-        const userInsert = await registerUser.registerUser(name,login,[], password)
+        await registerUser.registerUser(name,login,[], password).then(data =>{
+            if(data.id){
+                Alert.alert(`Usuário ${name} cadastrado com sucesso!`)
 
-        if(userInsert.create)
-            Alert.alert(`Usuário ${name} cadastrado com sucesso!`)
-
-        if(!userInsert.create)
-            Alert.alert(`Erro ao inserir usuário: ${userInsert.message}`)
-        navigation.navigate('Home')
-        
+                navigation.goBack()
+            }else{
+                Alert.alert(data.message)
+            }
+        }).catch(error => navigation.navigate('Login'))
     }
 
     return(
