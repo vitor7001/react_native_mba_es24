@@ -3,6 +3,9 @@ import { useNavigation } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
 import { Button, FlatList, StyleSheet, Text, View } from 'react-native';
 import { listUsers } from '../services/user/user.list.service';
+import ItemView from '../components/ItemView';
+
+import { useFocusEffect } from '@react-navigation/native';
 
 export default function Home() {
   
@@ -21,15 +24,18 @@ export default function Home() {
       if(data.errorMessage){
         Alert.alert('Erro ao listar usuários: ', data.errorMessage)
       }else{
-        console.log("DATA")
-        console.log(data)
         setUsers(data)
       }
     })
   }, [])
 
+  useFocusEffect(
+    React.useCallback(() => {
+      listUsers.listUser()
+    
+    }, [] )
+  )
 
-  
   return (
     <View style={styles.container}>
       <StatusBar style="auto" />
@@ -38,9 +44,7 @@ export default function Home() {
       data={users}
       renderItem={({item}) =>{
         return (
-          <View style={styles.itemView}>
-          <Text >{item.id} - {item.name} - {item.username}</Text>
-          </View>
+          <ItemView user={item} />
         )
       }}
       
@@ -50,9 +54,6 @@ export default function Home() {
 }
 
 const styles = StyleSheet.create({
-  itemView:{
-    padding: 10
-  },
   container: {
     flex: 1,
     backgroundColor: '#fff',

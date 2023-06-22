@@ -9,9 +9,9 @@ export default function LoginPage() {
 
     const navigation = useNavigation()
 
-    const [username, setUsername] = React.useState('uedsonreis');
+    const [username, setUsername] = React.useState('vitor');
 
-    const [password, setPassword] = React.useState('123456');
+    const [password, setPassword] = React.useState('123');
 
     function signIn() {
 
@@ -31,7 +31,7 @@ export default function LoginPage() {
         <View style={styles.container}>
             <Text>Página de verificação de login</Text>
 
-            <Text style={styles.label}>Login: {username}</Text>
+            <Text style={styles.label}>Login:</Text>
             <TextInput value={username} style={styles.input} onChangeText={setUsername} />
 
             <Text style={styles.label}>Senha:</Text>

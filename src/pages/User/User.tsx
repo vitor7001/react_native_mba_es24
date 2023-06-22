@@ -1,16 +1,35 @@
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import React from "react";
 import { View, Button, Text,TextInput, StyleSheet, Dimensions, Alert } from "react-native";
 import { registerUser } from '../../services/user/user.create.service';
+import {updateUser} from '../../services/user/user.update.service';
 
-export default function UserRegister(){
+type Props = {user: any}
+
+export default function UserRegister(props: Props){
 
     const navigation = useNavigation();
+    const route = useRoute()
 
+    const [id, setId] = React.useState(null)
     const [name, setName] = React.useState('');
     const [login, setLogin] = React.useState('');
     const [password, setPassword] = React.useState('');
     const [confirmPassword, setConfirmPassword] = React.useState('');    
+
+    const { user } = route.params || props; 
+    console.log("USER")
+    console.log(user)
+    React.useEffect(() => {
+    if (user){
+        setId(user.id)
+        setName(user.name);
+        setLogin(user.username);
+        setPassword(user.password);
+    }else{
+        console.log("PROPS VAZIA")
+    }
+}, [user]);
 
     async function  register(){
         
@@ -37,15 +56,31 @@ export default function UserRegister(){
             return
         }
 
-        await registerUser.registerUser(name,login,[], password).then(data =>{
-            if(data.id){
-                Alert.alert(`Usuário ${name} cadastrado com sucesso!`)
+        if(id){
 
-                navigation.goBack()
-            }else{
-                Alert.alert(data.message)
-            }
-        }).catch(error => navigation.navigate('Login'))
+            await updateUser.updateUser(id,name, login, [], password).then(data =>{
+                if(data.id){
+                    Alert.alert(`Usuário ${name} atualizado com sucesso!`)
+                    navigation.goBack()
+                }else{
+                    Alert.alert(data.message)
+                }
+            })
+
+        }else {
+
+            await registerUser.registerUser(name,login,[], password).then(data =>{
+                if(data.id){
+                    Alert.alert(`Usuário ${name} cadastrado com sucesso!`)
+    
+                    navigation.goBack()
+                }else{
+                    Alert.alert(data.message)
+                }
+            }).catch(error => navigation.navigate('Login'))
+        }
+
+
     }
 
     return(
@@ -68,7 +103,7 @@ export default function UserRegister(){
 
             
             <View style={styles.botao}>
-                <Button title="Entrar" onPress={register}/>
+                <Button title={id ? "Atualizar" : "Registrar"} onPress={register}/>
             </View>
 
             <View style={styles.botao}>
