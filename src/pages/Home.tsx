@@ -16,8 +16,13 @@ export default function Home() {
   React.useEffect(() => {
     navigation.setOptions({
       headerLeft: () => <Button title='Sair' onPress={() => navigation.goBack()}/>,
-      headerRight: () => <Button title='Cadastrar' onPress={() => navigation.navigate('UserRegister')}/>
-  
+      headerRight: () => (
+        <View style={{flexDirection: 'row'}}>
+          <Button title='Usuário' onPress={() => navigation.navigate('UserRegister')}/>
+          <View style={{ width: 10 }} />
+          <Button title='Role' onPress={() => navigation.navigate('RolesList')}/>
+        </View>
+      )
     })
 
     listUsers.listUser().then(data =>{

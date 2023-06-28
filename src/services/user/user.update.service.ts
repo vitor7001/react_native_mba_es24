@@ -2,7 +2,7 @@ import { sessionManager } from "../session.repository";
 
 class UpdateUser{
 
-    private readonly url = 'http://192.168.0.113:3000'
+    private readonly url = 'http://192.168.0.114:3000'
 
     public async updateUser(id: number, name: string, username: string, roles: [],password: string){
         const user = await sessionManager.getLoggedUser()

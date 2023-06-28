@@ -9,9 +9,9 @@ export default function LoginPage() {
 
     const navigation = useNavigation()
 
-    const [username, setUsername] = React.useState('vitor');
+    const [username, setUsername] = React.useState('uedsonreis');
 
-    const [password, setPassword] = React.useState('123');
+    const [password, setPassword] = React.useState('123456');
 
     function signIn() {
 

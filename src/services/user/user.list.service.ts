@@ -2,7 +2,7 @@ import { sessionManager } from "../session.repository";
 
 class ListUsers{
 
-    private readonly url = 'http://192.168.0.113:3000'
+    private readonly url = 'http://192.168.0.114:3000'
 
     public async listUser(){
         const user = await sessionManager.getLoggedUser()
