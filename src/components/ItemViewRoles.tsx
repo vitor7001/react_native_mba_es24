@@ -13,7 +13,7 @@ export default function ItemViewRoles(props: Props){
     const navigation = useNavigation<any>();
 
     return (
-      <View style={styles.itemView} onTouchEnd={() => navigation.navigate('UserRegister',  {user: user} ) }>
+      <View style={styles.itemView} onTouchEnd={() => navigation.navigate('RolesAdd',  {role: role} ) }>
       <Text>{role.id} - {role.name} - {role.description}</Text>
   </View>
     )

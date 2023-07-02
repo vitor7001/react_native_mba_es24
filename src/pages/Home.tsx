@@ -8,27 +8,28 @@ import ItemView from '../components/ItemView';
 import { useFocusEffect } from '@react-navigation/native';
 
 export default function Home() {
-  
+
   const navigation = useNavigation<any>();
-  
+
   const [users, setUsers] = React.useState<any[]>([])
 
   React.useEffect(() => {
     navigation.setOptions({
-      headerLeft: () => <Button title='Sair' onPress={() => navigation.goBack()}/>,
+      headerLeft: () => <Button title='Sair' onPress={() => navigation.goBack()} />,
       headerRight: () => (
-        <View style={{flexDirection: 'row'}}>
-          <Button title='Usuário' onPress={() => navigation.navigate('UserRegister')}/>
+        <View style={{ flexDirection: 'row' }}>
+          <Button title='Usuário' onPress={() => navigation.navigate('UserRegister')} />
           <View style={{ width: 10 }} />
-          <Button title='Role' onPress={() => navigation.navigate('RolesList')}/>
+          <Button title='Role' onPress={() => navigation.navigate('Permissões')} />
         </View>
       )
     })
 
-    listUsers.listUser().then(data =>{
-      if(data.errorMessage){
+    listUsers.listUser().then(data => {
+
+      if (data.errorMessage) {
         Alert.alert('Erro ao listar usuários: ', data.errorMessage)
-      }else{
+      } else {
         setUsers(data)
       }
     })
@@ -36,23 +37,30 @@ export default function Home() {
 
   useFocusEffect(
     React.useCallback(() => {
-      listUsers.listUser()
-    
-    }, [] )
+      listUsers.listUser().then(data => {
+
+        if (data.errorMessage) {
+          Alert.alert('Erro ao listar usuários: ', data.errorMessage)
+        } else {
+          setUsers(data)
+        }
+      })
+
+    }, [])
   )
 
   return (
     <View style={styles.container}>
       <StatusBar style="auto" />
       <Text>Listagem de usuários</Text>
-      <FlatList 
-      data={users}
-      renderItem={({item}) =>{
-        return (
-          <ItemView user={item} />
-        )
-      }}
-      
+      <FlatList
+        data={users}
+        renderItem={({ item }) => {
+          return (
+            <ItemView user={item} />
+          )
+        }}
+
       />
     </View>
   );

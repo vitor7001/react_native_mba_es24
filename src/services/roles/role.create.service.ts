@@ -1,34 +1,32 @@
 import { sessionManager } from "../session.repository";
 
-class ListUsers{
+class RegisterRole{
 
     private readonly url = 'http://192.168.0.105:3000'
 
-    public async listUser(){
+    public async registerRole(name: string, description: string){
         const user = await sessionManager.getLoggedUser()
 
         if(!user) throw new Error("Não há usuário no local storage para ser utilizado")
 
-        const res = await fetch(this.url + '/users/', {
-            method: 'GET',
+        const res = await fetch(this.url + '/roles', {
+            method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${user.token}`
-            }
+            },
+            body: JSON.stringify({
+                name,
+                description
+            })
         })
 
+        const roleCreated = await res.json() 
 
-        if(res.status === 200){
-            const userCreated = await res.json() 
-
-            return userCreated 
-        }
-
-        const error = await res.json()
-        return {errorMessage: error.message}
+        return roleCreated
     }
 
 }
 
 
-export const listUsers = new ListUsers();
+export const registerRole = new RegisterRole();

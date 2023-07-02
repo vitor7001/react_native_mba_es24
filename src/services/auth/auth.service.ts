@@ -1,7 +1,7 @@
 import { sessionManager } from "../session.repository";
 
 class AuthService{
-    private readonly url = 'http://192.168.0.114:3000'
+    private readonly url = 'http://192.168.0.105:3000'
 
     public async login(username: string, password: string ){
 

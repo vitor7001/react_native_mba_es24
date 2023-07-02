@@ -16,7 +16,7 @@ export default function App() {
         <Stack.Screen name='Login' component={LoginPage} options={{title: 'Acesso ao sistema'}}/>
         <Stack.Screen name='Home' component={Home}/>
         <Stack.Screen name='UserRegister' component={UserRegister}/>    
-        <Stack.Screen name='RolesList' component={HomeRoles} />    
+        <Stack.Screen name='Permissões' component={HomeRoles} />    
         <Stack.Screen name='RolesAdd' component={RolesAdd} />
       </Stack.Navigator>
     </NavigationContainer>

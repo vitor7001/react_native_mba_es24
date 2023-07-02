@@ -1,15 +1,15 @@
 import { sessionManager } from "../session.repository";
 
-class ListUsers{
+class ListRoles{
 
     private readonly url = 'http://192.168.0.105:3000'
 
-    public async listUser(){
+    public async listRoles(){
         const user = await sessionManager.getLoggedUser()
 
         if(!user) throw new Error("Não há usuário no local storage para ser utilizado")
 
-        const res = await fetch(this.url + '/users/', {
+        const res = await fetch(this.url + '/roles/', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -19,9 +19,9 @@ class ListUsers{
 
 
         if(res.status === 200){
-            const userCreated = await res.json() 
+            const roles = await res.json() 
 
-            return userCreated 
+            return roles 
         }
 
         const error = await res.json()
@@ -31,4 +31,4 @@ class ListUsers{
 }
 
 
-export const listUsers = new ListUsers();
+export const listRoles = new ListRoles();

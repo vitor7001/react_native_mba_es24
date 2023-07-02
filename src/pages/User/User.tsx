@@ -1,8 +1,11 @@
 import { useNavigation, useRoute } from '@react-navigation/native';
 import React from "react";
-import { View, Button, Text,TextInput, StyleSheet, Dimensions, Alert } from "react-native";
+import { View, Button, Text,TextInput, StyleSheet, Dimensions, Alert, FlatList } from "react-native";
 import { registerUser } from '../../services/user/user.create.service';
 import {updateUser} from '../../services/user/user.update.service';
+
+import ItemRoles from '../../components/ItemRoles';
+import {listRoles} from '../../services/roles/roles.list.service'
 
 type Props = {user: any}
 
@@ -17,9 +20,11 @@ export default function UserRegister(props: Props){
     const [password, setPassword] = React.useState('');
     const [confirmPassword, setConfirmPassword] = React.useState('');    
 
+    const [roles, setRoles] = React.useState<any[]>([])
+
+
     const { user } = route.params || props; 
-    console.log("USER")
-    console.log(user)
+
     React.useEffect(() => {
     if (user){
         setId(user.id)
@@ -29,6 +34,17 @@ export default function UserRegister(props: Props){
     }else{
         console.log("PROPS VAZIA")
     }
+
+
+    listRoles.listRoles().then(data =>{
+        console.log("ROLEs")
+        console.log(data)
+        if(data.errorMessage){
+            Alert.alert('Erro ao listar roles: ', data.errorMessage)
+        }else{
+            setRoles(data)
+        }
+    })
 }, [user]);
 
     async function  register(){
@@ -86,7 +102,7 @@ export default function UserRegister(props: Props){
     return(
 
         <View style={styles.container}>
-            <Text style={styles.titulo}>Cadastre um Usuário</Text>
+            <Text style={styles.titulo}>{id ? "Atualize os dados do Usuário" : "Cadastre um Usuário"}</Text>
        
        
             <Text style={styles.label}>Nome:</Text>
@@ -101,7 +117,16 @@ export default function UserRegister(props: Props){
             <Text style={styles.label}>Confirmar Senha:</Text>
             <TextInput value={confirmPassword} style={styles.input} onChangeText={setConfirmPassword} secureTextEntry/>
 
-            
+
+            <FlatList
+            data={roles}
+            renderItem={({item}) => {
+                return(
+                    <ItemRoles role={item} />
+                )
+            }}
+
+            />
             <View style={styles.botao}>
                 <Button title={id ? "Atualizar" : "Registrar"} onPress={register}/>
             </View>
