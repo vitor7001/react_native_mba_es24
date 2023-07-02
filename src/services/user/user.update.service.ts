@@ -4,7 +4,7 @@ class UpdateUser{
 
     private readonly url = 'http://192.168.0.105:3000'
 
-    public async updateUser(id: number, name: string, username: string, roles: [],password: string){
+    public async updateUser(id: number, name: string, username: string, roles: Array<String>,password: string){
         const user = await sessionManager.getLoggedUser()
 
         if(!user) throw new Error("Não há usuário no local storage para ser utilizado")
@@ -12,7 +12,7 @@ class UpdateUser{
         const corpo = JSON.stringify({
             name,
             username,
-            roles: [],
+            roles,
             password
         })
 

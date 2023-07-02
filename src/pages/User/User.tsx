@@ -7,6 +7,8 @@ import {updateUser} from '../../services/user/user.update.service';
 import ItemRoles from '../../components/ItemRoles';
 import {listRoles} from '../../services/roles/roles.list.service'
 
+import {getUser} from '../../services/user/user.get.service'
+
 type Props = {user: any}
 
 export default function UserRegister(props: Props){
@@ -22,26 +24,34 @@ export default function UserRegister(props: Props){
 
     const [roles, setRoles] = React.useState<any[]>([])
 
+    const [userRoles, setUserRoles] = React.useState<any[]>([])
 
+    const [selectedRoles, setSelectedRoles] = React.useState<any[]>([]);
+    
     const { user } = route.params || props; 
 
+ 
     React.useEffect(() => {
     if (user){
-        setId(user.id)
-        setName(user.name);
-        setLogin(user.username);
-        setPassword(user.password);
+
+        getUser.getUser(user.id).then(data => {
+            setId(data.id)
+            setName(data.name);
+            setLogin(data.username);
+            setPassword(data.password);
+            setUserRoles(data.roles)
+        }) 
+
     }else{
         console.log("PROPS VAZIA")
     }
 
 
     listRoles.listRoles().then(data =>{
-        console.log("ROLEs")
-        console.log(data)
         if(data.errorMessage){
             Alert.alert('Erro ao listar roles: ', data.errorMessage)
         }else{
+
             setRoles(data)
         }
     })
@@ -72,9 +82,12 @@ export default function UserRegister(props: Props){
             return
         }
 
+        const idsRoles = selectedRoles.map((item) => item.id)
+        
+
         if(id){
 
-            await updateUser.updateUser(id,name, login, [], password).then(data =>{
+            await updateUser.updateUser(id,name, login, idsRoles, password).then(data =>{
                 if(data.id){
                     Alert.alert(`Usuário ${name} atualizado com sucesso!`)
                     navigation.goBack()
@@ -85,7 +98,7 @@ export default function UserRegister(props: Props){
 
         }else {
 
-            await registerUser.registerUser(name,login,[], password).then(data =>{
+            await registerUser.registerUser(name,login,idsRoles, password).then(data =>{
                 if(data.id){
                     Alert.alert(`Usuário ${name} cadastrado com sucesso!`)
     
@@ -120,13 +133,19 @@ export default function UserRegister(props: Props){
 
             <FlatList
             data={roles}
-            renderItem={({item}) => {
-                return(
-                    <ItemRoles role={item} />
-                )
+            renderItem={({ item }) => {
+                return (
+                <ItemRoles role={item} userRoles={userRoles} selectedRoles={selectedRoles} onRoleToggle={role => setSelectedRoles(prevRoles => {
+                    if (prevRoles.includes(role)) {
+                    return prevRoles.filter(prevRole => prevRole !== role);
+                    } else {
+                    return [...prevRoles, role];
+                    }
+                })} />
+                );
             }}
-
             />
+
             <View style={styles.botao}>
                 <Button title={id ? "Atualizar" : "Registrar"} onPress={register}/>
             </View>
@@ -179,3 +198,4 @@ const styles = StyleSheet.create({
         marginTop: 40
     }
 })
+
